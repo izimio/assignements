@@ -1,15 +1,23 @@
 #!/bin/bash
 
-# Clean output file
-> output.txt
-
-# Compile the Java program if needed
+# Compile the Java file
 javac pc_static_block.java
 
-# Run the program with thread counts from 1 to 32
-for i in {1..32}
-do
-  echo "Running with $i thread(s)..." | tee -a output.txt
-  java pc_static_block $i 200000 >> output.txt
-  echo "-------------------------------" >> output.txt
+# Output file
+OUTPUT_FILE="output.txt"
+echo "==== Static Cyclic Parallel Prime Computation Results ====" > $OUTPUT_FILE
+echo "Range: 1 to 200000" >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+
+# Fixed range to check for primes
+NUM_END=200000
+
+# List of thread counts
+THREAD_COUNTS=(1 2 4 6 8 10 12 14 16 32)
+
+# Run the program with each thread count
+for THREADS in "${THREAD_COUNTS[@]}"; do
+    echo ">>> Running with $THREADS thread(s)..." >> $OUTPUT_FILE
+    java pc_static_block $THREADS $NUM_END >> $OUTPUT_FILE
+    echo "" >> $OUTPUT_FILE
 done

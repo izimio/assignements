@@ -1,35 +1,35 @@
 import java.util.concurrent.locks.ReentrantLock;
 
 public class pc_static_cyclic {
-    private static int NUM_END = 200000;   // Default input
-    private static int NUM_THREADS = 1;    // Default number of threads
-    private static final int TASK_SIZE = 10; // Fixed task size
+    private static int NUM_END = 200000;
+    private static int NUM_THREAD = 1;
+    private static final int TASK_SIZE = 10;
 
     private static int counter = 0;
     private static final ReentrantLock mutex = new ReentrantLock();
 
     public static void main(String[] args) throws InterruptedException {
         if (args.length == 2) {
-            NUM_THREADS = Integer.parseInt(args[0]);
+            NUM_THREAD = Integer.parseInt(args[0]);
             NUM_END = Integer.parseInt(args[1]);
         }
 
-        Thread[] threads = new Thread[NUM_THREADS];
+        Thread[] workers = new Thread[NUM_THREAD];
+        long globalStart = System.currentTimeMillis();
 
-        long programStartTime = System.currentTimeMillis();
-
-        for (int t = 0; t < NUM_THREADS; t++) {
+        for (int t = 0; t < NUM_THREAD; t++) {
             final int threadId = t;
 
-            threads[t] = new Thread(() -> {
-                long startTime = System.currentTimeMillis();
+            workers[t] = new Thread(() -> {
+                long localStart = System.currentTimeMillis();
+                // System.out.println("Thread " + threadId + ": Active");
 
-                for (int i = threadId * TASK_SIZE; i < NUM_END; i += TASK_SIZE * NUM_THREADS) {
-                    int start = i;
-                    int end = Math.min(i + TASK_SIZE, NUM_END);
+                for (int i = threadId * TASK_SIZE; i < NUM_END; i += TASK_SIZE * NUM_THREAD) {
+                    int rangeStart = i;
+                    int rangeEnd = Math.min(i + TASK_SIZE - 1, NUM_END - 1);
 
-                    for (int j = start; j < end; j++) {
-                        if (isPrime(j)) {
+                    for (int n = rangeStart; n <= rangeEnd; n++) {
+                        if (isPrime(n)) {
                             mutex.lock();
                             try {
                                 counter++;
@@ -40,30 +40,34 @@ public class pc_static_cyclic {
                     }
                 }
 
-                long endTime = System.currentTimeMillis();
-                System.out.println("Thread " + threadId + " finished in " + (endTime - startTime) + " ms");
+                long localEnd = System.currentTimeMillis();
+                // System.out.println("Thread " + threadId + ": Done in " + (localEnd - localStart) + "ms");
             });
 
-            threads[t].start();
+            workers[t].start();
         }
 
-        for (Thread thread : threads) {
+        for (Thread thread : workers) {
             thread.join();
         }
 
-        long programEndTime = System.currentTimeMillis();
-        long totalTime = programEndTime - programStartTime;
+        long globalEnd = System.currentTimeMillis();
+        long totalTime = globalEnd - globalStart;
+        double performance = 1.0 / (totalTime); // 1 / time in seconds
 
-        System.out.println("Program Execution Time: " + totalTime + " ms");
-        System.out.println("1.." + NUM_END + " prime counter= " + counter);
+        System.out.println("=== Total Execution Time: " + totalTime + " ms");
+        System.out.println("=== Performance: " + performance);
+        System.out.println("=== Total Prime Count: " + counter);
     }
 
     private static boolean isPrime(int x) {
         int i;
         if (x <= 1) return false;
+
         for (i = 2; i < x; i++) {
             if (x % i == 0) return false;
         }
+
         return true;
     }
 }

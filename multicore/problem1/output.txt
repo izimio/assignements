@@ -1,0 +1,53 @@
+==== Static Cyclic Parallel Prime Computation Results ====
+Range: 1 to 200000
+
+>>> Running with 1 thread(s)...
+=== Total Execution Time: 3703 ms
+=== Performance: 2.7005130974885227E-4
+=== Total Prime Count: 17984
+
+>>> Running with 2 thread(s)...
+=== Total Execution Time: 2434 ms
+=== Performance: 4.108463434675431E-4
+=== Total Prime Count: 17984
+
+>>> Running with 4 thread(s)...
+=== Total Execution Time: 1600 ms
+=== Performance: 6.25E-4
+=== Total Prime Count: 17984
+
+>>> Running with 6 thread(s)...
+=== Total Execution Time: 1587 ms
+=== Performance: 6.30119722747322E-4
+=== Total Prime Count: 17984
+
+>>> Running with 8 thread(s)...
+=== Total Execution Time: 1280 ms
+=== Performance: 7.8125E-4
+=== Total Prime Count: 17984
+
+>>> Running with 10 thread(s)...
+=== Total Execution Time: 1208 ms
+=== Performance: 8.278145695364238E-4
+=== Total Prime Count: 17984
+
+>>> Running with 12 thread(s)...
+=== Total Execution Time: 1264 ms
+=== Performance: 7.911392405063291E-4
+=== Total Prime Count: 17984
+
+>>> Running with 14 thread(s)...
+=== Total Execution Time: 1528 ms
+=== Performance: 6.544502617801048E-4
+=== Total Prime Count: 17984
+
+>>> Running with 16 thread(s)...
+=== Total Execution Time: 1305 ms
+=== Performance: 7.662835249042146E-4
+=== Total Prime Count: 17984
+
+>>> Running with 32 thread(s)...
+=== Total Execution Time: 1266 ms
+=== Performance: 7.898894154818325E-4
+=== Total Prime Count: 17984
+
