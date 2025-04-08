@@ -54,7 +54,7 @@ public class pc_static_block {
 
         long globalEnd = System.currentTimeMillis();
         long totalTime = globalEnd - globalStart;
-        double performance = 1.0 / totalTime;
+        double performance = 1.0 / totalTime * 1000;
 
         System.out.println("=== Total Execution Time: " + totalTime + " ms");
         System.out.println("=== Performance: " + performance);
