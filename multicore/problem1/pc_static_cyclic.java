@@ -22,7 +22,7 @@ public class pc_static_cyclic {
 
             workers[t] = new Thread(() -> {
                 long localStart = System.currentTimeMillis();
-                // System.out.println("Thread " + threadId + ": Active");
+                System.out.println("Thread " + threadId + ": Active");
 
                 for (int i = threadId * TASK_SIZE; i < NUM_END; i += TASK_SIZE * NUM_THREAD) {
                     int rangeStart = i;
@@ -41,7 +41,7 @@ public class pc_static_cyclic {
                 }
 
                 long localEnd = System.currentTimeMillis();
-                // System.out.println("Thread " + threadId + ": Done in " + (localEnd - localStart) + "ms");
+                System.out.println("Thread " + threadId + ": Done in " + (localEnd - localStart) + "ms");
             });
 
             workers[t].start();
