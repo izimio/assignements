@@ -22,7 +22,7 @@ public class pc_static_cyclic {
 
             workers[t] = new Thread(() -> {
                 long localStart = System.currentTimeMillis();
-                System.out.println("Thread " + threadId + ": Active");
+                // System.out.println("Thread " + threadId + ": Active");
 
                 for (int i = threadId * TASK_SIZE; i < NUM_END; i += TASK_SIZE * NUM_THREAD) {
                     int rangeStart = i;
@@ -41,7 +41,7 @@ public class pc_static_cyclic {
                 }
 
                 long localEnd = System.currentTimeMillis();
-                System.out.println("Thread " + threadId + ": Done in " + (localEnd - localStart) + "ms");
+                // System.out.println("Thread " + threadId + ": Done in " + (localEnd - localStart) + "ms");
             });
 
             workers[t].start();
@@ -53,11 +53,9 @@ public class pc_static_cyclic {
 
         long globalEnd = System.currentTimeMillis();
         long totalTime = globalEnd - globalStart;
-        double performance = 1.0 / (totalTime); // 1 / time in seconds
-
-        System.out.println("=== Total Execution Time: " + totalTime + " ms");
-        System.out.println("=== Performance: " + performance);
-        System.out.println("=== Total Prime Count: " + counter);
+        
+        System.out.println("Program Execution Time: " + totalTime + " ms");
+        System.out.println("1.." + NUM_END + " prime counter= " + counter);
     }
 
     private static boolean isPrime(int x) {

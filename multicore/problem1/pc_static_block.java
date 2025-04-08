@@ -23,7 +23,7 @@ public class pc_static_block {
             final int endRange = (threadId + 1) * NUM_END / NUM_THREAD - 1;
 
             workers[i] = new Thread(() -> {
-                System.out.println("→ Thread-" + threadId + " scanning range: " + startRange + " to " + endRange);
+                // System.out.println("→ Thread-" + threadId + " scanning range: " + startRange + " to " + endRange);
                 long localStart = System.currentTimeMillis();
 
                 int localCount = 0;
@@ -42,7 +42,7 @@ public class pc_static_block {
 
                 long localEnd = System.currentTimeMillis();
                 long threadDuration = localEnd - localStart;
-                System.out.println("✓ Thread-" + threadId + " done in " + threadDuration + " ms");
+                // System.out.println("✓ Thread-" + threadId + " done in " + threadDuration + " ms");
             });
 
             workers[i].start();
@@ -54,11 +54,9 @@ public class pc_static_block {
 
         long globalEnd = System.currentTimeMillis();
         long totalTime = globalEnd - globalStart;
-        double performance = 1.0 / totalTime * 1000;
 
-        System.out.println("=== Total Execution Time: " + totalTime + " ms");
-        System.out.println("=== Performance: " + performance);
-        System.out.println("=== Total Prime Count: " + counter);
+        System.out.println("Program Execution Time: " + totalTime + " ms");
+        System.out.println("1.." + NUM_END + " prime counter= " + counter);
     }
 
     private static boolean isPrime(int x) {
