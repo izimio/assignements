@@ -9,4 +9,4 @@ def generate_input_file(filename, size=1000, min_val=0, max_val=150):
 
     print(f"Generated {filename} with {size} numbers.")
 
-generate_input_file("input.txt", size=1000)
+generate_input_file("input.txt", size=50000)

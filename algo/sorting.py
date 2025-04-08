@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 
 from random_quicksort import quicksort
 from merge_insertion_sort import merge_insertion_sort
@@ -64,6 +65,20 @@ def is_sorted(arr):
 
 try:
     (NUM_LIST, OUTPUT_FILE) = check_errors()
+    start_time = time.time()
+    merge_insertion_sort(NUM_LIST.copy())
+    end_time = time.time()
+    print(f"Merge Insertion Sort Time: {end_time - start_time:.6f} seconds")
+    start_time = time.time()
+    quicksort(NUM_LIST.copy())
+    end_time = time.time()  
+    print(f"Quicksort Time: {end_time - start_time:.6f} seconds")
+    
+    start_time = time.time()
+    heap_sort(NUM_LIST.copy())
+    end_time = time.time()
+    print(f"Heap Sort Time: {end_time - start_time:.6f} seconds")
+    
     merge_insertion_sort_ouput = merge_insertion_sort(NUM_LIST.copy())
     quicksort_output = quicksort(NUM_LIST.copy())
     heap_sort_output = heap_sort(NUM_LIST.copy())
