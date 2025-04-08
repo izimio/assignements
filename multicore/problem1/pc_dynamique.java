@@ -18,7 +18,11 @@ public class pc_dynamique {
         long startTime = System.currentTimeMillis();
 
         for (int i = 0; i < NUM_THREAD; i++) {
+            final int threadId = i;
             threads[i] = new Thread(() -> {
+                long localStart = System.currentTimeMillis();
+                System.out.println("Thread " + threadId + ": Active");
+
                 while (true) {
                     int start = nextTask.getAndAdd(TASK_SIZE);
                     if (start > NUM_END) break;
@@ -31,6 +35,9 @@ public class pc_dynamique {
                         }
                     }
                 }
+
+                long localEnd = System.currentTimeMillis();
+                System.out.println("Thread " + threadId + ": Done in " + (localEnd - localStart) + "ms");
             });
             threads[i].start();
         }
@@ -41,10 +48,10 @@ public class pc_dynamique {
 
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-        double performance = 1.0 / totalTime;
+        double performance = 1.0 / (totalTime / 1000);
 
         System.out.println("=== Total Execution Time: " + totalTime + " ms");
-        System.out.println("=== Performance: " + performance + " E-4");
+        System.out.println("=== Performance: " + performance);
         System.out.println("=== Total Prime Count: " + counter.get());
     }
 
