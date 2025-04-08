@@ -1,5 +1,7 @@
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-slim
 
 WORKDIR /usr/src/app
 
-CMD [ "bash" ]
+COPY . .
+
+CMD ["/bin/bash"]
