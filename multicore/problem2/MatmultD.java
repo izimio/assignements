@@ -1,99 +1,88 @@
-import java.util.*;
-import java.lang.*;
+import java.util.Scanner;
 
 public class MatmultD {
-    private static Scanner sc = new Scanner(System.in);
-    private static int[][] a, b, c;
-    private static int thread_no;
-    private static long[] thread_times;
+    private static final Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws InterruptedException {
-        thread_no = args.length == 1 ? Integer.parseInt(args[0]) : 1;
+    public static void main(String[] args) {
+        int thread_no=0;
+        if (args.length==1) thread_no = Integer.valueOf(args[0]);
+        else thread_no = 1;
+    
+        int[][] a = readMatrix();
+        int[][] b = readMatrix();
 
-        a = readMatrix();
-        b = readMatrix();
-        c = new int[a.length][b[0].length];
-        thread_times = new long[thread_no];
+        long startTime = System.currentTimeMillis();
+        int[][] c = multMatrix(a, b, thread_no);
+        long endTime = System.currentTimeMillis();
 
-        long programStartTime = System.currentTimeMillis();
+        // printMatrix(a);
+        // printMatrix(b);
+        // printMatrix(c);
 
-        Thread[] threads = new Thread[thread_no];
-        int rowsPerThread = a.length / thread_no;
-        int remainder = a.length % thread_no;
-
-        int currentRow = 0;
-
-        for (int i = 0; i < thread_no; i++) {
-            int startRow = currentRow;
-            int rowsForThisThread = rowsPerThread + (i < remainder ? 1 : 0);
-            int endRow = startRow + rowsForThisThread;
-
-            threads[i] = new Thread(new Worker(i, startRow, endRow));
-            threads[i].start();
-            currentRow = endRow;
-        }
-
-        for (Thread thread : threads) {
-            thread.join();
-        }
-
-        long programEndTime = System.currentTimeMillis();
-
-        printMatrix(c);
-
-        System.out.printf("Total execution time: %d ms\n", programEndTime - programStartTime);
-        System.out.println(programEndTime - programStartTime);
+        // System.out.printf("[thread_no]:%2d , [Time]:%4d ms\n", thread_no, endTime - startTime);
+        // System.out.printf("Calculation Time: %d ms\n" , endTime-startTime);
+        double performance = 1.0 / ((endTime-startTime) / 1000.0);
+        System.out.println(performance);
     }
 
     public static int[][] readMatrix() {
         int rows = sc.nextInt();
         int cols = sc.nextInt();
         int[][] result = new int[rows][cols];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
                 result[i][j] = sc.nextInt();
-            }
-        }
+
         return result;
     }
 
-    public static void printMatrix(int[][] matrix) {
-        System.out.println("Matrix[" + matrix.length + "][" + matrix[0].length + "]");
-        int sum = 0;
-        for (int[] row : matrix) {
-            for (int val : row) {
-                sum += val;
-            }
-        }
-        System.out.println("Matrix Sum = " + sum);
-    }
+    public static int[][] multMatrix(int[][] a, int[][] b, int thread_no) {
+        if (a.length == 0) return new int[0][0];
+        if (a[0].length != b.length) return null;
 
-    static class Worker implements Runnable {
-        int id, startRow, endRow;
+        int m = a.length;
+        int n = a[0].length;
+        int p = b[0].length;
 
-        Worker(int id, int startRow, int endRow) {
-            this.id = id;
-            this.startRow = startRow;
-            this.endRow = endRow;
-        }
+        int[][] result = new int[m][p];
+        Thread[] threads = new Thread[thread_no];
 
-        public void run() {
-            long startTime = System.currentTimeMillis();
+        int rowsPerThread = (m + thread_no - 1) / thread_no; // ceiling division
 
-            int n = a[0].length;
-            int p = b[0].length;
+        for (int t = 0; t < thread_no; t++) {
+            final int threadId = t;
+            final int startRow = threadId * rowsPerThread;
+            final int endRow = Math.min(startRow + rowsPerThread, m);
 
-            for (int i = startRow; i < endRow; i++) {
-                for (int j = 0; j < p; j++) {
-                    for (int k = 0; k < n; k++) {
-                        c[i][j] += a[i][k] * b[k][j];
+            threads[t] = new Thread(() -> {
+                long threadStart = System.currentTimeMillis();
+
+                for (int i = startRow; i < endRow; i++) {
+                    for (int j = 0; j < p; j++) {
+                        int sum = 0;
+                        for (int k = 0; k < n; k++) {
+                            sum += a[i][k] * b[k][j];
+                        }
+                        result[i][j] = sum;
                     }
                 }
-            }
 
-            long endTime = System.currentTimeMillis();
-            thread_times[id] = endTime - startTime;
-            System.out.printf("Thread %d execution time: %d ms\n", id, thread_times[id]);
+                long threadEnd = System.currentTimeMillis();
+                // System.out.printf("Thread %2d executed in %4d ms\n", threadId, threadEnd - threadStart);
+            });
+
+            threads[t].start();
         }
+
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
     }
 }

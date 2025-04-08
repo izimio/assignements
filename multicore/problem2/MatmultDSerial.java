@@ -28,7 +28,6 @@ public class MatmultDSerial
 
     //printMatrix(a);
     //printMatrix(b);    
-    printMatrix(c);
 
     //System.out.printf("thread_no: %d\n" , thread_no);
     //System.out.printf("Calculation Time: %d ms\n" , endTime-startTime);
