@@ -23,7 +23,7 @@ public class pc_static_block {
             final int endRange = (threadId + 1) * NUM_END / NUM_THREAD - 1;
 
             workers[i] = new Thread(() -> {
-                // System.out.println("→ Thread-" + threadId + " scanning range: " + startRange + " to " + endRange);
+                System.out.println("→ Thread-" + threadId + " scanning range: " + startRange + " to " + endRange);
                 long localStart = System.currentTimeMillis();
 
                 int localCount = 0;
@@ -42,7 +42,7 @@ public class pc_static_block {
 
                 long localEnd = System.currentTimeMillis();
                 long threadDuration = localEnd - localStart;
-                // System.out.println("✓ Thread-" + threadId + " done in " + threadDuration + " ms");
+                System.out.println("✓ Thread-" + threadId + " done in " + threadDuration + " ms");
             });
 
             workers[i].start();

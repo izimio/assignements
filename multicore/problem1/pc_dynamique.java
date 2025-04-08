@@ -21,7 +21,7 @@ public class pc_dynamique {
             final int threadId = i;
             threads[i] = new Thread(() -> {
                 long localStart = System.currentTimeMillis();
-                // System.out.println("Thread " + threadId + ": Active");
+                System.out.println("Thread " + threadId + ": Active");
 
                 while (true) {
                     int start = nextTask.getAndAdd(TASK_SIZE);
@@ -37,7 +37,7 @@ public class pc_dynamique {
                 }
 
                 long localEnd = System.currentTimeMillis();
-                // System.out.println("Thread " + threadId + ": Done in " + (localEnd - localStart) + "ms");
+                System.out.println("Thread " + threadId + ": Done in " + (localEnd - localStart) + "ms");
             });
             threads[i].start();
         }

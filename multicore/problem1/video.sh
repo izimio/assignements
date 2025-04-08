@@ -32,3 +32,4 @@ for JAVA_FILE in "${JAVA_FILES[@]}"; do
     echo "========================================"
     echo ""
 done
+
