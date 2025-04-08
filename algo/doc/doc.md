@@ -25,9 +25,12 @@ This document presents an analysis of three sorting algorithms:
 
 #### 📤 Output:
 
-- Merge-Insertion Sort: ![Output 1](output1.png)
-- Randomized Quick Sort: ![Output 2](output1.png)
-- Heap Sort: ![Output 3](output1.png)
+- Merge-Insertion Sort:
+  ![Output 1](output1.png)
+- Randomized Quick Sort:
+  ![Output 2](output1.png)
+- Heap Sort:
+  ![Output 3](output1.png)
 
 #### 🧪 Benchmark:
 
@@ -35,10 +38,9 @@ This document presents an analysis of three sorting algorithms:
 
 #### 📌 Conclusion:
 
-- 🥇 **Merge-Insertion Sort** was the fastest.  
-  This is mainly because the array was small enough to trigger the **insertion sort threshold**, making it act more like an insertion sort — which performs well on small datasets.
-- 🥈 **Randomized Quick Sort** followed closely.
-- 🥉 **Heap Sort** was the slowest, as the overhead of heapifying wasn't justified for such a small input size.
+- 🥇 **Merge-Insertion Sort** was the fastest.This is mainly because the array was small enough to trigger the **insertion sort threshold**, making it act more like an insertion sort — which performs well on small datasets.
+- 🥈 **Heap Sort** was not the fastest, as the overhead of heapifying wasn't justified for such a small input size.
+- 🥉 **Randomized Quick Sort** followed closely but is the slowest here.
 
 ---
 
@@ -50,9 +52,12 @@ This document presents an analysis of three sorting algorithms:
 
 #### 📤 Output:
 
-- Merge-Insertion Sort: ![Output 4](output2.png)
-- Randomized Quick Sort: ![Output 5](output2.png)
-- Heap Sort: ![Output 6](output2.png)
+- Merge-Insertion Sort:
+  ![Output 4](output2.png)
+- Randomized Quick Sort:
+  ![Output 5](output2.png)
+- Heap Sort:
+  ![Output 6](output2.png)
 
 #### 🧪 Benchmark:
 
@@ -74,9 +79,12 @@ This document presents an analysis of three sorting algorithms:
 
 #### 📤 Output:
 
-- Merge-Insertion Sort: ![Output 7](output3.png)
-- Randomized Quick Sort: ![Output 8](output3.png)
-- Heap Sort: ![Output 9](output3.png)
+- Merge-Insertion Sort:
+  ![Output 7](output3.png)
+- Randomized Quick Sort:
+  ![Output 8](output3.png)
+- Heap Sort:
+  ![Output 9](output3.png)
 
 #### 🧪 Benchmark:
 
@@ -87,6 +95,37 @@ This document presents an analysis of three sorting algorithms:
 - 🥇 **Merge-Insertion Sort** clearly outperformed others thanks to its hybrid structure and optimized recursion strategy.
 - 🥈 **Heap Sort** came second — its time complexity remains stable regardless of input structure.
 - 🥉 **Randomized Quick Sort** was the slowest due to potential unbalanced partitioning and larger recursive stack depth.
+
+Got it! Here's the **revised conclusion** for part 4 with the correct ranking:
+
+---
+
+### 4️⃣ Random Reverse-Sorted Array of Size 50
+
+#### 📥 Input:
+
+![Input 4](list4.png)
+
+#### 📤 Output:
+
+- Randomized Quick Sort:  
+  ![Output 7](output4.png)
+
+- Merge-Insertion Sort:  
+  ![Output 8](output4.png)
+
+- Heap Sort:  
+  ![Output 9](output4.png)
+
+#### 🧪 Benchmark:
+
+![Benchmark 4](benchmark4.png)
+
+#### 📌 Conclusion:
+
+- 🥇 **Randomized Quick Sort** came out on top, efficiently handling the reverse-ordered input thanks to its pivot selection method and recursive partitioning.
+- 🥈 **Merge-Insertion Sort** followed closely, benefiting from the early use of insertion sort and stable merging, but still slightly slower due to overhead from its hybrid structure.
+- 🥉 **Heap Sort** was the slowest again, as its consistent time complexity doesn't exploit any specific order advantage and incurs more swaps and heap maintenance.
 
 ---
 

@@ -1,4 +1,4 @@
-THRESHOLD = 32 
+THRESHOLD = 50
 # Below this size, use insertion sort, it's totally arbitrary
 # and can be adjusted for performance tuning
 
@@ -46,13 +46,13 @@ def merge_insertion_sort(arr, start=0, end=None):
 
     if end - start + 1 <= THRESHOLD:
         insertion_sort(arr, start, end)
-        return
+        return arr
 
     mid = (start + end) // 2
     merge_insertion_sort(arr, start, mid)
     merge_insertion_sort(arr, mid + 1, end)
     merge(arr, start, mid, end)
     
-    # Check if the array is already sorted
+    # check condition to return the final sorted array
     if start == 0 and end == len(arr) - 1:
         return arr

@@ -7,11 +7,11 @@ def max_heapify(arr, n, i):
     if left < n and arr[left] > arr[largest]:
         largest = left
 
-    # Check if right child is larger than largest so far
+    # else check if right is bigger than the curr largest
     if right < n and arr[right] > arr[largest]:
         largest = right
 
-    # If largest is not root
+    # if largest is still not root then...
     if largest != i:
         arr[i], arr[largest] = arr[largest], arr[i]  # swap
         max_heapify(arr, n, largest)  # recursively heapify the affected sub-tree
@@ -19,7 +19,7 @@ def max_heapify(arr, n, i):
 
 def build_max_heap(arr):
     n = len(arr)
-    # Start from last non-leaf node and heapify each one
+    # heapify all last non leaf
     for i in range(n // 2 - 1, -1, -1):
         max_heapify(arr, n, i)
 
@@ -30,6 +30,6 @@ def heap_sort(arr):
 
     # Extract elements one by one from the heap
     for i in range(n - 1, 0, -1):
-        arr[0], arr[i] = arr[i], arr[0]  # swap
-        max_heapify(arr, i, 0)  # heapify the reduced heap
+        arr[0], arr[i] = arr[i], arr[0]  # Here we swap the value
+        max_heapify(arr, i, 0)  # and we go one and one :)
     return arr
