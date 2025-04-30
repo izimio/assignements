@@ -10,3 +10,5 @@ clean:
 
 run:
 	@docker run -it --rm -v "$(shell pwd):/usr/src/app" $(DOCKER_IMAGE_NAME)
+
+	
