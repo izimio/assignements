@@ -1,66 +1,72 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
-#include <math.h>
 
-int is_prime(int n)
+const int SEQUENTIAL_CUTOFF = 1000;
+
+long divide_and_conquer_sum(long *arr, int lo, int hi)
 {
-    if (n < 2)
-        return 0;
-    int i;
-    for (i = 2; i <= sqrt(n); i++)
+    if ((hi - lo) < SEQUENTIAL_CUTOFF)
     {
-        if (n % i == 0)
-            return 0;
+        long sum = 0;
+        for (int i = lo; i < hi; i++)
+        {
+            sum += arr[i];
+        }
+        return sum;
     }
-    return 1;
+    else
+    {
+        long l_sum = 0, r_sum = 0;
+
+#pragma omp task shared(l_sum)
+        {
+            l_sum = divide_and_conquer_sum(arr, lo, (lo + hi) / 2);
+        }
+
+#pragma omp task shared(r_sum)
+        {
+            r_sum = divide_and_conquer_sum(arr, (lo + hi) / 2, hi);
+        }
+
+#pragma omp taskwait
+        long total = l_sum + r_sum;
+        printf("        sum(%d to %d) = %ld\n", lo, hi - 1, total);
+        return total;
+    }
 }
 
-int main(int argc, char *argv[])
+int main(int ac, char *av[])
 {
-    if (argc != 3)
+    int NUM_END = 10000;
+    if (ac == 2)
     {
-        printf("Usage: %s scheduling_type thread_count\n", argv[0]);
-        printf("scheduling_type: 1=static, 2=dynamic, 3=static,10, 4=dynamic,10\n");
+        NUM_END = atoi(av[1]);
+    }
+
+    long *arr;
+    if ((arr = malloc(NUM_END * sizeof(long))) == NULL || NUM_END < 1)
+    {
+        fprintf(stderr, "Memory allocation failed or invalid size\n");
         return 1;
     }
 
-    int scheduling_type = atoi(argv[1]);
-    int num_threads = atoi(argv[2]);
-    int max_num = 200000;
-    int total_primes = 0;
+    for (int i = 0; i < NUM_END; i++)
+    {
+        arr[i] = i + 1;
+    }
 
-    double start_time = omp_get_wtime();
-
-    omp_set_num_threads(num_threads);
+    long total_sum;
 
 #pragma omp parallel
     {
-        int local_count = 0;
-
-#pragma omp for schedule(static) nowait
-        for (int i = 2; i <= 2; i++)
+#pragma omp single
         {
-        } // empty to "warm-up" threads
-
-#pragma omp for reduction(+ : total_primes) \
-    schedule(static)
-        for (int i = 2; i <= max_num; i++)
-        {
-            if (is_prime(i))
-            {
-                total_primes++;
-            }
+            total_sum = divide_and_conquer_sum(arr, 0, NUM_END);
         }
     }
 
-    double end_time = omp_get_wtime();
-    double exec_time = (end_time - start_time) * 1000;
-
-    printf("Threads: %d\n", num_threads);
-    printf("Scheduling Type: %d\n", scheduling_type);
-    printf("Total Primes: %d\n", total_primes);
-    printf("Execution Time (ms): %.3f\n", exec_time);
-
+    printf("sum from 1 to %d =\n%ld\n", NUM_END, total_sum);
+    free(arr);
     return 0;
 }
